@@ -1,4 +1,6 @@
-# Setting MQTT for use with Mendix
+# MQTT
+
+# C/CPP
 
 * Install WSL/Use Linux
 * sudo apt-get install mosquitto
@@ -35,6 +37,5 @@
 	cmake -DCMAKE_INSTALL_PREFIX -DPAHO_MQTT_C_LIBRARIES=/usr/lib/x86_64-linux-gnu/ ../
 	make -j8
 	sudo make install -j8
-
 
 ~/src/eclipse/paho.mqtt.cpp-master/build$ cmake -DCMAKE_PREFIX_PATH=/usr/lib/x86_64-linux-gnu -DCMAKE_INSTALL_PREFIX=/usr -DPAHO_MQTT_C_LIBRARIES=/usr/lib/x86_64-linux-gnu/libpaho-mqtt3c.so ../
