@@ -6,6 +6,6 @@
 		"clientID":"phone"
 	},
 	"log":{
-		"logfile":"./log.txt"
+		"logfile":"./log/log.txt"
 	}
 }

@@ -1,3 +1,4 @@
 obj/
 build/
 config.json
+log/
