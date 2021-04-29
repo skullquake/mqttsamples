@@ -76,9 +76,9 @@ class callback:public virtual mqtt::callback,public virtual mqtt::iaction_listen
 		cli_.subscribe(TOPIC,QOS,nullptr,subListener_);
 	}
 	void connection_lost(const std::string&cause)override{
-		PLOG_INFO<<"Connection lost"<<std::endl;
-		if(!cause.empty())PLOG_ERROR<<"cause: "<<cause<<std::endl;
-		PLOG_INFO<<"Reconnecting..."<<std::endl;
+		PLOG_INFO<<"Connection lost";
+		if(!cause.empty())PLOG_ERROR<<"cause: "<<cause;
+		PLOG_INFO<<"Reconnecting...";
 		nretry_=0;
 		reconnect();
 	}
