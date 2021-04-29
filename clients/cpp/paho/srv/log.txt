@@ -352,3 +352,51 @@ try{
 2021-04-29 14:20:10.296 INFO  [29142] [action_listener::on_success@36] Subscription success
 2021-04-29 14:20:10.297 INFO  [29142] [action_listener::on_success@39]  for token: [1]
 2021-04-29 14:20:10.298 INFO  [29142] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
+2021-04-29 05:23:35.470 INFO  [12596] [app::log::Logger::initialize@18] Logger connected [./log.txt]
+
+2021-04-29 05:23:35.474 DEBUG [12596] [main@12] starting mqtt client
+2021-04-29 05:23:35.479 INFO  [12597] [app::mqtt::Client::Client@164] Connecting to tcp://192.168.2.228:1883...
+2021-04-29 05:23:35.612 INFO  [12604] [callback::connected@71] Connection success
+2021-04-29 05:23:35.612 INFO  [12604] [callback::connected@72] Subscribing to topic 'cpp_qjs_req
+2021-04-29 05:23:35.613 INFO  [12604] [callback::connected@73] for client foobar
+2021-04-29 05:23:35.613 INFO  [12604] [callback::connected@74] using QoS1
+2021-04-29 05:23:35.613 INFO  [12604] [callback::connected@75] Press Q<Enter> to quit
+2021-04-29 05:23:35.614 INFO  [12604] [action_listener::on_success@36] Subscription success
+2021-04-29 05:23:35.615 INFO  [12604] [action_listener::on_success@39]  for token: [1]
+2021-04-29 05:23:35.615 INFO  [12604] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
+2021-04-29 05:23:39.300 INFO  [12604] [callback::connection_lost@79] Connection lost
+
+2021-04-29 05:23:39.301 INFO  [12604] [callback::connection_lost@81] Reconnecting...
+
+2021-04-29 05:23:41.905 INFO  [12604] [callback::connected@71] Connection success
+2021-04-29 05:23:41.905 INFO  [12604] [callback::connected@72] Subscribing to topic 'cpp_qjs_req
+2021-04-29 05:23:41.905 INFO  [12604] [callback::connected@73] for client foobar
+2021-04-29 05:23:41.906 INFO  [12604] [callback::connected@74] using QoS1
+2021-04-29 05:23:41.906 INFO  [12604] [callback::connected@75] Press Q<Enter> to quit
+2021-04-29 05:23:41.909 INFO  [12604] [action_listener::on_success@36] Subscription success
+2021-04-29 05:23:41.910 INFO  [12604] [action_listener::on_success@39]  for token: [2]
+2021-04-29 05:23:41.911 INFO  [12604] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
+2021-04-29 05:23:45.261 INFO  [12604] [callback::connection_lost@79] Connection lost
+
+2021-04-29 05:23:45.261 INFO  [12604] [callback::connection_lost@81] Reconnecting...
+
+2021-04-29 05:23:47.866 INFO  [12604] [callback::connected@71] Connection success
+2021-04-29 05:23:47.866 INFO  [12604] [callback::connected@72] Subscribing to topic 'cpp_qjs_req
+2021-04-29 05:23:47.866 INFO  [12604] [callback::connected@73] for client foobar
+2021-04-29 05:23:47.867 INFO  [12604] [callback::connected@74] using QoS1
+2021-04-29 05:23:47.867 INFO  [12604] [callback::connected@75] Press Q<Enter> to quit
+2021-04-29 05:23:47.869 INFO  [12604] [action_listener::on_success@36] Subscription success
+2021-04-29 05:23:47.869 INFO  [12604] [action_listener::on_success@39]  for token: [3]
+2021-04-29 05:23:47.870 INFO  [12604] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
+2021-04-29 05:23:53.228 INFO  [12604] [callback::connection_lost@79] Connection lost
+
+2021-04-29 05:23:53.228 INFO  [12604] [callback::connection_lost@81] Reconnecting...
+
+2021-04-29 05:23:55.832 INFO  [12604] [callback::connected@71] Connection success
+2021-04-29 05:23:55.832 INFO  [12604] [callback::connected@72] Subscribing to topic 'cpp_qjs_req
+2021-04-29 05:23:55.833 INFO  [12604] [callback::connected@73] for client foobar
+2021-04-29 05:23:55.833 INFO  [12604] [callback::connected@74] using QoS1
+2021-04-29 05:23:55.834 INFO  [12604] [callback::connected@75] Press Q<Enter> to quit
+2021-04-29 05:23:55.837 INFO  [12604] [action_listener::on_success@36] Subscription success
+2021-04-29 05:23:55.837 INFO  [12604] [action_listener::on_success@39]  for token: [4]
+2021-04-29 05:23:55.837 INFO  [12604] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
