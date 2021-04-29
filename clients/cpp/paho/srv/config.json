@@ -3,7 +3,7 @@
 		"host":"192.168.2.228",
 		"port":1883,
 		"topic":"cpp_qjs_req",
-		"clientID":"phone"
+		"clientID":"phone2"
 	},
 	"log":{
 		"logfile":"./log.txt"
