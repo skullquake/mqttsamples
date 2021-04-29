@@ -10,15 +10,20 @@ namespace app::config{
 			void set_port(int);
 			void set_topic(std::string);
 			void set_clientID(std::string);
+			void set_logfile(std::string);
 			std::string get_host();
 			int get_port();
 			std::string get_topic();
 			std::string get_clientID();
+			std::string get_logfile();
+			void loadJson(std::string pPath);
+			void writeJson(std::string pPath);
 		private:
 			std::string mHost;
 			int mPort;
 			std::string mTopic;
 			std::string mClientID;
+			std::string mLogFile;
 	};
 	extern Config config;
 }

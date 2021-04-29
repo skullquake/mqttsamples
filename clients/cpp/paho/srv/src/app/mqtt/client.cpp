@@ -15,6 +15,7 @@
 #include"app/util/util.hpp"
 #include"app/qjs/global.hpp"
 #include"app/config/config.hpp"
+#include"app/log/logger.hpp"
 std::string SERVER_ADDRESS("tcp://localhost:1883");
 std::string CLIENT_ID("pahopp_qjs");
 std::string TOPIC("cpp_qjs_req");
@@ -23,17 +24,24 @@ int N_RETRY_ATTEMPTS=5;
 class action_listener:public virtual mqtt::iaction_listener{
 		std::string name_;
 		void on_failure(const mqtt::token& tok)override{
-			std::cout<<name_<<" failure";
+			PLOG_ERROR<<"failure";
+			//std::cout<<name_<<" failure";
 			if(tok.get_message_id()!=0)
-				std::cout<<" for token: ["<<tok.get_message_id()<<"]"<< std::endl;
-			std::cout<<std::endl;
+				//std::cout<<" for token: ["<<tok.get_message_id()<<"]"<< std::endl;
+				PLOG_ERROR<<" for token: ["<<tok.get_message_id()<<"]";
+			//std::cout<<std::endl;
 		}
 		void on_success(const mqtt::token&tok)override{
-			std::cout<<name_<<" success";
-			if(tok.get_message_id()!=0)std::cout<<" for token: ["<<tok.get_message_id()<<"]"<<std::endl;
+			//std::cout<<name_<<" success";
+			PLOG_INFO<<name_<<" success";
+			if(tok.get_message_id()!=0)
+				//std::cout<<" for token: ["<<tok.get_message_id()<<"]"<<std::endl;
+				PLOG_INFO<<" for token: ["<<tok.get_message_id()<<"]";
 			auto top=tok.get_topics();
-			if(top&&!top->empty())std::cout<<"\ttoken topic: '"<<(*top)[0]<<"', ..."<<std::endl;
-			std::cout<<std::endl;
+			if(top&&!top->empty())
+				//std::cout<<"\ttoken topic: '"<<(*top)[0]<<"', ..."<<std::endl;
+				PLOG_INFO<<"\ttoken topic: '"<<(*top)[0]<<"', ...";
+			//std::cout<<std::endl;
 		}
 	public:
 		action_listener(const std::string&name):name_(name){}
@@ -48,42 +56,41 @@ class callback:public virtual mqtt::callback,public virtual mqtt::iaction_listen
 		try{
 			cli_.connect(connOpts_,nullptr,*this);
 		}catch(const mqtt::exception&exc){
-			std::cerr<<"Error: "<<exc.what()<<std::endl;
+			//std::cerr<<"Error: "<<exc.what()<<std::endl;
+			PLOG_ERROR<<"Error: "<<exc.what();
 			exit(1);
 		}
 	}
 	void on_failure(const mqtt::token&tok)override{
-		std::cout<<"Connection attempt failed"<<std::endl;
+		PLOG_ERROR<<"Connection attempt failed";
 		if(++nretry_>N_RETRY_ATTEMPTS)exit(1);
 		reconnect();
 	}
 	void on_success(const mqtt::token&tok)override{}
 	void connected(const std::string&cause)override{
-		std::cout
-			<<"\nConnection success"
-			<<"\nSubscribing to topic '"<<TOPIC<<"'\n"
-			<<"\tfor client " << CLIENT_ID
-			<<" using QoS" << QOS << "\n"
-			<<"\nPress Q<Enter> to quit\n"
-			<<std::endl
-		;
+		PLOG_INFO<<"Connection success";
+		PLOG_INFO<<"Subscribing to topic '"<<TOPIC;
+		PLOG_INFO<<"for client " << CLIENT_ID;
+		PLOG_INFO<<"using QoS" << QOS;
+		PLOG_INFO<<"Press Q<Enter> to quit";
 		cli_.subscribe(TOPIC,QOS,nullptr,subListener_);
 	}
 	void connection_lost(const std::string&cause)override{
-		std::cout<<"\nConnection lost"<<std::endl;
-		if(!cause.empty())std::cout<<"\tcause: "<<cause<<std::endl;
-		std::cout<<"Reconnecting..."<<std::endl;
+		PLOG_INFO<<"Connection lost"<<std::endl;
+		if(!cause.empty())PLOG_ERROR<<"cause: "<<cause<<std::endl;
+		PLOG_INFO<<"Reconnecting..."<<std::endl;
 		nretry_=0;
 		reconnect();
 	}
 	void message_arrived(mqtt::const_message_ptr msg)override{
-		std::cout<<">["<<msg->get_topic()<<":"<<msg->to_string()<<"]"<<std::endl;
+		PLOG_INFO<<">["<<msg->get_topic()<<":"<<msg->to_string()<<"]";
 		{//test json
 			app::qjs::Engine qjse;
 			{
 				qjse.getContext().global()["topic"]=msg->get_topic();
 				qjse.getContext().global()["message"]=msg->to_string();
 			}
+			/*
 			{
 				auto&module=qjse.getContext().addModule("Mqtt");
 				module.function("publish",[this](std::string topic,std::string payload){
@@ -102,14 +109,14 @@ class callback:public virtual mqtt::callback,public virtual mqtt::iaction_listen
 					globalThis.mqtt = mqtt;
 				)","<input>",JS_EVAL_TYPE_MODULE);
 			}
+			*/
+			/*
 			{
 				auto&module=qjse.getContext().addModule("Test");
 				module.function("test",[](){
 				});
 			}
-
-
-
+			*/
 			try{
 				auto j=nlohmann::json::parse(msg->to_string());
 				if(j.contains("path")){
@@ -117,17 +124,17 @@ class callback:public virtual mqtt::callback,public virtual mqtt::iaction_listen
 					if(jpath.is_string()){
 						qjse.evalFile(jpath);
 					}else{
-						std::cerr<<"app::main: error: invalid path specification"<<std::endl;
+						PLOG_ERROR<<"app::main: error: invalid path specification";
 					}
 				}else if(j.contains("script")){
 					auto jscript=j["script"];
 					if(jscript.is_string()){
 						qjse.evalString(jscript);
 					}else{
-						std::cerr<<"app::main: error: invalid script specification"<<std::endl;
+						PLOG_ERROR<<"app::main: error: invalid script specification";
 					}
 				}else{
-					std::cerr<<"app::main: error: no path specified"<<std::endl;
+					PLOG_ERROR<<"app::main: error: no path specified";
 				}
 			}catch(const std::exception&e){
 				{
@@ -154,7 +161,7 @@ app::mqtt::Client::Client()
 	}
 	CLIENT_ID=::app::config::config.get_clientID();
 	TOPIC=::app::config::config.get_topic();
-	std::cout<<"Connecting to "<<host<<"..."<<std::endl;
+	PLOG_INFO<<"Connecting to "<<host<<"...";
 	//::mqtt::async_client cli("tcp://localhost:1883","ES");
 	cli=new ::mqtt::async_client(host,app::config::config.get_clientID());
 	::mqtt::connect_options connOpts;
@@ -164,9 +171,9 @@ app::mqtt::Client::Client()
 	try{
 		cli->connect(connOpts,nullptr,cb);
 	}catch(const ::mqtt::exception&exc){
-		std::cerr
+		PLOG_ERROR
 			<<"ERROR: Unable to connect to MQTT server: '"
-			<<SERVER_ADDRESS<<"'"<<exc<<std::endl
+			<<SERVER_ADDRESS<<"'"<<exc;
 		;
 		//return 1;
 	}
@@ -175,6 +182,6 @@ app::mqtt::Client::~Client(){
 	try{
 		cli->disconnect()->wait();
 	}catch(const ::mqtt::exception&exc){
-		std::cerr<<exc<<std::endl;
+		PLOG_ERROR<<exc;
 	}
 }

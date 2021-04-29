@@ -17,26 +17,6 @@ app::qjs::Engine::Engine():context(runtime),cli(nullptr){
 	)","<input>",JS_EVAL_TYPE_MODULE);
 	/*
 	{
-		auto&module=context.addModule("Mqtt");
-		module.function("publish",[this](std::string topic,std::string payload){
-			//if(cli!=nullptr){
-				try{
-					auto msg_res=mqtt::make_message(topic.c_str(),payload.c_str());
-					//msg_res->set_qos(QOS);
-					msg_res->set_qos(1);
-					cli->publish(msg_res);
-				}catch(const std::exception&e){
-					std::cerr<<e.what()<<std::endl;
-				}
-			//}
-		});
-		context.eval(R"(
-			import * as mqtt from 'Mqtt';
-			globalThis.mqtt = mqtt;
-		)","<input>",JS_EVAL_TYPE_MODULE);
-	}
-	*/
-	{
 		auto&module=context.addModule("Config");
 		module.function("set_host",[](std::string val){
 				app::config::config.set_host(val);
@@ -67,6 +47,7 @@ app::qjs::Engine::Engine():context(runtime),cli(nullptr){
 			globalThis.config = config;
 		)","<input>",JS_EVAL_TYPE_MODULE);
 	}
+	*/
 }
 app::qjs::Engine::~Engine(){
 }

@@ -1,6 +1,7 @@
 #include<cstdlib>
 #include<cstdio>
 #include<memory>
+#include<array>
 #include<string>
 #define BUFSZ 128
 std::string exec(std::string scmd) {
