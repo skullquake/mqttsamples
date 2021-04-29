@@ -448,3 +448,27 @@ try{
 2021-04-29 06:15:21.597 INFO  [12843] [action_listener::on_success@36] Subscription success
 2021-04-29 06:15:21.598 INFO  [12843] [action_listener::on_success@39]  for token: [1]
 2021-04-29 06:15:21.598 INFO  [12843] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
+2021-04-29 06:18:44.352 INFO  [12939] [app::log::Logger::initialize@18] Logger connected [./log.txt]
+
+2021-04-29 06:18:44.353 DEBUG [12939] [main@12] starting mqtt client
+2021-04-29 06:18:44.354 INFO  [12940] [app::mqtt::Client::Client@164] Connecting to tcp://192.168.2.228:1883...
+2021-04-29 06:18:44.458 INFO  [12947] [callback::connected@71] Connection success
+2021-04-29 06:18:44.459 INFO  [12947] [callback::connected@72] Subscribing to topic 'cpp_qjs_req
+2021-04-29 06:18:44.460 INFO  [12947] [callback::connected@73] for client computer
+2021-04-29 06:18:44.461 INFO  [12947] [callback::connected@74] using QoS1
+2021-04-29 06:18:44.461 INFO  [12947] [callback::connected@75] Press Q<Enter> to quit
+2021-04-29 06:18:44.463 INFO  [12947] [action_listener::on_success@36] Subscription success
+2021-04-29 06:18:44.463 INFO  [12947] [action_listener::on_success@39]  for token: [1]
+2021-04-29 06:18:44.463 INFO  [12947] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
+2021-04-29 06:18:53.527 INFO  [12951] [app::log::Logger::initialize@18] Logger connected [./log.txt]
+
+2021-04-29 06:18:53.529 DEBUG [12951] [main@12] starting mqtt client
+2021-04-29 06:18:53.530 INFO  [12952] [app::mqtt::Client::Client@164] Connecting to tcp://192.168.2.228:1883...
+2021-04-29 06:18:53.633 INFO  [12959] [callback::connected@71] Connection success
+2021-04-29 06:18:53.634 INFO  [12959] [callback::connected@72] Subscribing to topic 'cpp_qjs_req
+2021-04-29 06:18:53.634 INFO  [12959] [callback::connected@73] for client computer
+2021-04-29 06:18:53.635 INFO  [12959] [callback::connected@74] using QoS1
+2021-04-29 06:18:53.635 INFO  [12959] [callback::connected@75] Press Q<Enter> to quit
+2021-04-29 06:18:53.639 INFO  [12959] [action_listener::on_success@36] Subscription success
+2021-04-29 06:18:53.640 INFO  [12959] [action_listener::on_success@39]  for token: [1]
+2021-04-29 06:18:53.640 INFO  [12959] [action_listener::on_success@43] 	token topic: 'cpp_qjs_req', ...
