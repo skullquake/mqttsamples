@@ -1,6 +1,7 @@
 #include"./global.hpp"
 #include"app/config/config.hpp"
-#include<iostream>
+#include"./mod/test/mod.hpp"
+#include"./mod/test2/mod.hpp"
 app::qjs::Engine::Engine():context(runtime),cli(nullptr){
 	rt=runtime.rt;
 	ctx=context.ctx;
@@ -15,6 +16,8 @@ app::qjs::Engine::Engine():context(runtime),cli(nullptr){
 		globalThis.std = std;
 		globalThis.os = os;
 	)","<input>",JS_EVAL_TYPE_MODULE);
+	app::qjs::mod::test::js_init_module_my_module(ctx,"test");
+	app::qjs::mod::test2::js_init_module_my_module(ctx,"test2");
 	/*
 	{
 		auto&module=context.addModule("Config");

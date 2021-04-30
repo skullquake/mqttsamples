@@ -1,5 +1,5 @@
-#include"./test.hpp"
-namespace app::qjs::mod{
+#include"./mod.hpp"
+namespace app::qjs::mod::test{
 	static JSValue plusNumbers(JSContext*ctx,JSValueConst this_val,int argc,JSValueConst*argv){
 		int a,b;
 		if(JS_ToInt32(ctx,&a,argv[0]))

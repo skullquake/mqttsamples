@@ -5,6 +5,11 @@
 		"topic":"cpp_qjs_req",
 		"clientID":"phone"
 	},
+	"http":{
+		"host":"0.0.0.0",
+		"port":8081,
+		"loglevel":"debug"
+	},
 	"log":{
 		"logfile":"./log/log.txt"
 	}

@@ -44,6 +44,9 @@ app::http::Server::Server(){
 		}
 		return j;
 	});
+	CROW_ROUTE(mApp,"/qjs/<string>")([this](std::string pPath){
+		return pPath;
+	});
 	if(app::config::config.get_httpLogLevel()=="info"){
 		mApp.loglevel(::crow::LogLevel::Info);
 	}else if(app::config::config.get_httpLogLevel()=="debug"){
