@@ -1,5 +1,6 @@
 #include"./srv.hpp"
 #include"app/config/config.hpp"
+#include"app/qjs/global.hpp"
 app::http::Server::Server(){
 	//crow::App</*MW*/>app;
 	CROW_ROUTE(mApp,"/")([](){
@@ -44,8 +45,13 @@ app::http::Server::Server(){
 		}
 		return j;
 	});
-	CROW_ROUTE(mApp,"/qjs/<string>")([this](std::string pPath){
-		return pPath;
+	CROW_ROUTE(mApp,"/qjs/<path>")([this](std::string pPath){
+		std::cout<<"/qjs/<path>:"<<pPath<<std::endl;
+		app::qjs::Engine e;
+		e.evalFile(std::string("./js/")+pPath);
+		crow::json::wvalue j;
+		j["msg"]="ok";
+		return j;
 	});
 	if(app::config::config.get_httpLogLevel()=="info"){
 		mApp.loglevel(::crow::LogLevel::Info);

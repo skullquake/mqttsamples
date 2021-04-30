@@ -1,5 +1,19 @@
 #include"./mod.hpp"
-namespace app::qjs::mod::test2{
+#include<iostream>
+namespace app::qjs::mod::crow{
+	static void f0(){
+		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
+	}
+	void reg(::qjs::Context&context){
+		std::cout<<"app::qjs::mod::crow::reg:start"<<std::endl;
+		auto&module=context.addModule("Crow");
+		module.function<&f0>("f0");
+		context.eval(R"(
+			import*as crow from'Crow';
+			globalThis.crow=crow;
+		)",JS_EVAL_TYPE_MODULE);
+	}
+	/*
 	static JSValue plusNumbers(JSContext*ctx,JSValueConst this_val,int argc,JSValueConst*argv){
 		int a,b;
 		if(JS_ToInt32(ctx,&a,argv[0]))
@@ -22,4 +36,5 @@ namespace app::qjs::mod::test2{
 		JS_AddModuleExportList(ctx,m,js_my_module_funcs,countof(js_my_module_funcs));
 		return m;
 	}
+	*/
 }
