@@ -5,7 +5,14 @@
 #include"app/http/srv.hpp"
 #include"app/config/config.hpp"
 #include"app/log/logger.hpp"
+#include"version/version.hpp"
+#include<iostream>
 int main(int argc,char*argv[]){
+	std::cout<<"Version: "<<version::getMajor()<<"."
+	                      <<version::getMinor()<<"."
+	                      <<version::getPatch()
+	                      <<std::endl
+	;
 	app::config::config.loadJson("./config.json");
 	app::log::logger.initialize(app::config::config.get_logFile());
 	//if(argc==2)app::qjs::globalEngine.evalFile(argv[1]);
