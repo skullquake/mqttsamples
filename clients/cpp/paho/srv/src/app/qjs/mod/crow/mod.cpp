@@ -16,6 +16,7 @@ namespace app::qjs::mod::crow{
 		module.function<&f0>("f0");
 		module.function<&write>("write");
 		module.function<&add_header>("add_header");
+		module.function("test",[](){});
 		module.add("res",&res);
 		module.add("req",&req);
 		context.eval(
