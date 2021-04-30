@@ -7,7 +7,7 @@
 #include"app/log/logger.hpp"
 int main(int argc,char*argv[]){
 	app::config::config.loadJson("./config.json");
-	app::log::logger.initialize(app::config::config.get_logfile());
+	app::log::logger.initialize(app::config::config.get_logFile());
 	//if(argc==2)app::qjs::globalEngine.evalFile(argv[1]);
 	PLOG_DEBUG<<"starting mqtt client";
 	std::thread t([](){

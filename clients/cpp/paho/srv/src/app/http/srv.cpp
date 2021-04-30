@@ -1,4 +1,5 @@
 #include"./srv.hpp"
+#include"app/config/config.hpp"
 app::http::Server::Server(){
 	//crow::App</*MW*/>app;
 	CROW_ROUTE(mApp,"/")([](){
@@ -43,10 +44,22 @@ app::http::Server::Server(){
 		}
 		return j;
 	});
-	mApp.loglevel(::crow::LogLevel::CRITICAL);
-	mApp.port(8089);
+	if(app::config::config.get_httpLogLevel()=="info"){
+		mApp.loglevel(::crow::LogLevel::Info);
+	}else if(app::config::config.get_httpLogLevel()=="debug"){
+		mApp.loglevel(::crow::LogLevel::Debug);
+	}else if(app::config::config.get_httpLogLevel()=="warning"){
+		mApp.loglevel(::crow::LogLevel::Warning);
+	}else if(app::config::config.get_httpLogLevel()=="error"){
+		mApp.loglevel(::crow::LogLevel::Error);
+	}else if(app::config::config.get_httpLogLevel()=="critical"){
+		mApp.loglevel(::crow::LogLevel::Critical);
+	}else{
+		mApp.loglevel(::crow::LogLevel::CRITICAL);
+	}
+	mApp.port(app::config::config.get_httpPort());
 	mApp.multithreaded();
-	//mApp.concurrency(4);
+	mApp.concurrency(app::config::config.get_httpConcurrency());
 }
 app::http::Server::~Server(){
 }

@@ -15,7 +15,7 @@ void app::log::Logger::initialize(std::string pLogFile){
 	plog::init(plog::debug,&consoleAppender)
 		.addAppender(&txtFileAppender);//only one?
 		//.addAppender(&csvFileAppender);
-	PLOG_INFO<<"Logger connected ["<<pLogFile<<"]"<<std::endl;
+	PLOG_INFO<<"Logger connected ["<<pLogFile<<"]";
 	//plog::init(plog::debug,"log.txt");
 	/*
 	PLOG_VERBOSE<<"PLOG_VERBOSE";

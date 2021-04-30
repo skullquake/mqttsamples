@@ -4,105 +4,159 @@
 #include<sstream>
 #include<stdexcept>
 #include"json/json.hpp"
+#include"plog/Log.h"
 app::config::Config::Config():
-	mHost("localhost"),
-	mPort(1883),
-	mTopic("pahopp_qjs"),
-	mClientID("cpp_qjs_req"),
+	mMqttHost("localhost"),
+	mMqttPort(1883),
+	mMqttTopic("pahopp_qjs"),
+	mMqttClientID("cpp_qjs_req"),
+	mHttpHost("0.0.0.0"),
+	mHttpPort(8080),
 	mLogFile("./log.txt")
 {
 }
 app::config::Config::~Config(){
 }
-void app::config::Config::set_host(std::string pHost){
-	mHost=pHost;
+void app::config::Config::set_mqttHost(std::string pMqttHost){
+	mMqttHost=pMqttHost;
 }
-void app::config::Config::set_port(int pPort){
-	mPort=pPort;
+void app::config::Config::set_mqttPort(int pMqttPort){
+	mMqttPort=pMqttPort;
 }
-void app::config::Config::set_topic(std::string pTopic){
-	mTopic=pTopic;
+void app::config::Config::set_mqttTopic(std::string pMqttTopic){
+	mMqttTopic=pMqttTopic;
 }
-void app::config::Config::set_clientID(std::string pClientID){
-	mClientID=pClientID;
+void app::config::Config::set_mqttClientID(std::string pMqttClientID){
+	mMqttClientID=pMqttClientID;
 }
-void app::config::Config::set_logfile(std::string pLogFile){
+void app::config::Config::set_httpHost(std::string pHttpHost){
+	mHttpHost=pHttpHost;
+}
+void app::config::Config::set_httpPort(int pHttpPort){
+	mHttpPort=pHttpPort;
+}
+void app::config::Config::set_httpLogLevel(std::string pHttpLogLevel){
+	mHttpLogLevel=pHttpLogLevel;
+}
+void app::config::Config::set_httpConcurrency(int pHttpConcurrency){
+	mHttpConcurrency=pHttpConcurrency;
+}
+void app::config::Config::set_logFile(std::string pLogFile){
 	mLogFile=pLogFile;
 }
 
-std::string app::config::Config::get_host(){
-	return mHost;
+std::string app::config::Config::get_mqttHost(){
+	return mMqttHost;
 }
-int app::config::Config::get_port(){
-	return mPort;
+int app::config::Config::get_mqttPort(){
+	return mMqttPort;
 }
-std::string app::config::Config::get_topic(){
-	return mTopic;
+std::string app::config::Config::get_mqttTopic(){
+	return mMqttTopic;
 }
-std::string app::config::Config::get_clientID(){
-	return mClientID;
+std::string app::config::Config::get_mqttClientID(){
+	return mMqttClientID;
 }
-std::string app::config::Config::get_logfile(){
+std::string app::config::Config::get_httpHost(){
+	return mHttpHost;
+}
+int app::config::Config::get_httpPort(){
+	return mHttpPort;
+}
+std::string app::config::Config::get_httpLogLevel(){
+	return mHttpLogLevel;
+}
+int app::config::Config::get_httpConcurrency(){
+	return mHttpConcurrency;
+}
+
+std::string app::config::Config::get_logFile(){
 	return mLogFile;
 }
 void app::config::Config::loadJson(std::string pPath){
-	//std::cout<<"app::config::Config::loadJson(std::string pPath):start"<<std::endl;
-	//std::cout<<"app::config::Config::loadJson(std::string pPath):loading "<<pPath<<std::endl;
 	try{
 		std::ifstream ifs(pPath);
 		if(!ifs)throw std::runtime_error(std::string("Failed: to load")+pPath);
-		//std::cout<<"app::config::Config::loadJson(std::string pPath):"<<pPath<<" opened"<<std::endl;
 		std::stringstream ss;
 		ss<<ifs.rdbuf();
 		ifs.close();
 		std::string strJson=ss.str();
-		//std::cout<<strJson<<std::endl;;
 		auto j=nlohmann::json::parse(strJson);
 		if(j.contains("mqtt")){
-			//std::cout<<"mqtt"<<std::endl;
 			auto jMqtt=j["mqtt"];
 			if(jMqtt.contains("host")){
-				//std::cout<<"mqtt:host"<<std::endl;
 				auto j=jMqtt["host"];
 				if(j.is_string()){
-					set_host(j);
+					set_mqttHost(j);
 				}
 			}
 			if(jMqtt.contains("port")){
-				//std::cout<<"mqtt:port"<<std::endl;
 				auto j=jMqtt["port"];
 				if(j.is_number()){
-					set_port(j);
+					set_mqttPort(j);
 				}
 			}
 			if(jMqtt.contains("topic")){
-				//std::cout<<"mqtt:topic"<<std::endl;
 				auto j=jMqtt["topic"];
 				if(j.is_string()){
-					set_topic(j);
+					set_mqttTopic(j);
 				}
 			}
 			if(jMqtt.contains("clientID")){
-				//std::cout<<"mqtt:clientID"<<std::endl;
 				auto j=jMqtt["clientID"];
 				if(j.is_string()){
-					set_clientID(j);
+					set_mqttClientID(j);
 				}
 			}
-
 		}
 		if(j.contains("log")){
 			auto jLog=j["log"];
 			if(jLog.contains("logfile")){
 				auto j=jLog["logfile"];
 				if(j.is_string()){
-					set_logfile(j);
+					set_logFile(j);
+				}
+			}
+		}
+		if(j.contains("http")){
+			auto jLog=j["http"];
+			if(jLog.contains("host")){
+				auto j=jLog["host"];
+				if(j.is_string()){
+					set_httpHost(j);
+				}else{
+					PLOG_ERROR<<"failed to obtain port";
+				}
+			}
+			if(jLog.contains("port")){
+				auto j=jLog["port"];
+				if(j.is_number()){
+					PLOG_INFO<<"port:"<<(int)j;
+					set_httpPort(j);
+				}else{
+					PLOG_ERROR<<"invalid port specification";
+				}
+			}else{
+					PLOG_ERROR<<"failed to obtain port";
+			}
+			if(jLog.contains("loglevel")){
+				auto j=jLog["loglevel"];
+				if(j.is_string()){
+					set_httpLogLevel(j);
+				}
+			}
+			if(jLog.contains("concurrency")){
+				auto j=jLog["concurrency"];
+				if(j.is_number()){
+					set_httpConcurrency(j);
 				}
 			}
 
+		}else{
+				PLOG_ERROR<<"failed to obtain http configuration";
 		}
 	}catch(const std::exception&e){
-		std::cerr<<"app::config::Config::loadJson(std::string pPath):error:"<<e.what()<<std::endl;
+		PLOG_ERROR<<e.what();
 	}
 }
 void app::config::Config::writeJson(std::string pPath){
