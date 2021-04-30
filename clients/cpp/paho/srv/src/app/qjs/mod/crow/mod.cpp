@@ -1,24 +1,37 @@
 #include"./mod.hpp"
 #include<iostream>
+#include<sstream>
 namespace app::qjs::mod::crow{
-	static void f0(){
-		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
+	static void write(std::string pSaddr,std::string pVal){
+		std::cout<<pSaddr<<std::endl;
+		std::cout<<pVal<<std::endl;
 	}
-	static void write(){
-		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
-	}
-	static void add_header(){
-		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
+	static void add_header(std::string pSaddr,std::string pHdrK,std::string pHdrV){
+		std::cout<<pSaddr<<std::endl;
+		std::cout<<pHdrK<<std::endl;
+		std::cout<<pHdrV<<std::endl;
 	}
 	void reg(::qjs::Context&context,const ::crow::request&req,::crow::response&res){
 		std::cout<<"app::qjs::mod::crow::reg:start"<<std::endl;
 		auto&module=context.addModule("Crow");
-		module.function<&f0>("f0");
 		module.function<&write>("write");
 		module.function<&add_header>("add_header");
-		module.function("test",[](){});
-		module.add("res",&res);
-		module.add("req",&req);
+		//module.function("test",[](){});
+		//auto cb=[](){};
+		//module.function<static_cast<void(*)(void)>(&cb)>("test");
+
+		{//module.add("res",&res);
+			std::ostringstream oss;
+			oss<<((void*)&res);
+			module.add("res",oss.str());
+		}
+
+		{//module.add("req",&req);
+			std::ostringstream oss;
+			oss<<((void*)&req);
+			module.add("req",oss.str());
+		}
+
 		context.eval(
 			R"(
 				import*as crow from'Crow';
