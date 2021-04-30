@@ -8,10 +8,14 @@ namespace app::qjs::mod::crow{
 		std::cout<<"app::qjs::mod::crow::reg:start"<<std::endl;
 		auto&module=context.addModule("Crow");
 		module.function<&f0>("f0");
-		context.eval(R"(
-			import*as crow from'Crow';
-			globalThis.crow=crow;
-		)",JS_EVAL_TYPE_MODULE);
+		context.eval(
+			R"(
+				import*as crow from'Crow';
+				globalThis.crow=crow;
+			)",
+			R"(<import>)",
+			JS_EVAL_TYPE_MODULE
+		);
 	}
 	/*
 	static JSValue plusNumbers(JSContext*ctx,JSValueConst this_val,int argc,JSValueConst*argv){
