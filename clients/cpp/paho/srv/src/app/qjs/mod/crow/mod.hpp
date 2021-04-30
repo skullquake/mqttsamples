@@ -5,8 +5,9 @@
 #include"quickjspp/quickjs/cutils.h"
 */
 #include"quickjspp/quickjspp.hpp"
+#include"crow/crow.h"
 namespace app::qjs::mod::crow{
-	void reg(::qjs::Context&context);
+	void reg(::qjs::Context&context,const ::crow::request&req,::crow::response&res);
 	/*
 	static JSValue plusNumbers(JSContext*ctx,JSValueConst this_val,int argc,JSValueConst*argv);
 	static int js_my_module_init(JSContext*ctx,JSModuleDef*m);

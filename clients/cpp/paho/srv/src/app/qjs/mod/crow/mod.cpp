@@ -4,10 +4,20 @@ namespace app::qjs::mod::crow{
 	static void f0(){
 		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
 	}
-	void reg(::qjs::Context&context){
+	static void write(){
+		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
+	}
+	static void add_header(){
+		std::cout<<"app::qjs::mod::crow::f0:start"<<std::endl;
+	}
+	void reg(::qjs::Context&context,const ::crow::request&req,::crow::response&res){
 		std::cout<<"app::qjs::mod::crow::reg:start"<<std::endl;
 		auto&module=context.addModule("Crow");
 		module.function<&f0>("f0");
+		module.function<&write>("write");
+		module.function<&add_header>("add_header");
+		module.add("res",&res);
+		module.add("req",&req);
 		context.eval(
 			R"(
 				import*as crow from'Crow';

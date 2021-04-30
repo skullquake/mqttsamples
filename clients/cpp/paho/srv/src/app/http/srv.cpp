@@ -1,6 +1,7 @@
 #include"./srv.hpp"
 #include"app/config/config.hpp"
 #include"app/qjs/global.hpp"
+#include"app/qjs/mod/crow/mod.hpp"
 app::http::Server::Server(){
 	//crow::App</*MW*/>app;
 	CROW_ROUTE(mApp,"/")([](){
@@ -45,13 +46,22 @@ app::http::Server::Server(){
 		}
 		return j;
 	});
-	CROW_ROUTE(mApp,"/qjs/<path>")([this](std::string pPath){
+	//CROW_ROUTE(mApp,"/qjs/<path>")([this](std::string pPath){
+	CROW_ROUTE(mApp,"/qjs/<path>")([this](const crow::request&req,crow::response&res,std::string pPath){
 		std::cout<<"/qjs/<path>:"<<pPath<<std::endl;
 		app::qjs::Engine e;
+		//e.getRuntime();
+		//e.getContext();
+		//e.getJSRuntime();
+		//e.getJSContext();
+		app::qjs::mod::crow::reg(e.getContext(),req,res);
 		e.evalFile(std::string("./js/")+pPath);
 		crow::json::wvalue j;
 		j["msg"]="ok";
-		return j;
+		//res.add_header("Content-Type","application/json");
+		res.add_header("Content-Type","text/plain");
+		res.write(j.dump());
+		res.end();
 	});
 	if(app::config::config.get_httpLogLevel()=="info"){
 		mApp.loglevel(::crow::LogLevel::Info);
