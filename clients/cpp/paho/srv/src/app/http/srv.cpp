@@ -2,6 +2,7 @@
 #include"app/config/config.hpp"
 #include"app/qjs/global.hpp"
 #include"app/qjs/mod/crow/mod.hpp"
+#include"version/version.hpp"
 app::http::Server::Server(){
 	//crow::App</*MW*/>app;
 	CROW_ROUTE(mApp,"/")([](){
@@ -46,9 +47,14 @@ app::http::Server::Server(){
 		}
 		return j;
 	});
-	//CROW_ROUTE(mApp,"/qjs/<path>")([this](std::string pPath){
+	CROW_ROUTE(mApp,"/version")([](){
+		crow::json::wvalue j;
+		j["major"]=::version::getMajor();
+		j["minor"]=::version::getMinor();
+		j["patch"]=::version::getPatch();
+		return j;
+	});
 	CROW_ROUTE(mApp,"/qjs/<path>")([this](const crow::request&req,crow::response&res,std::string pPath){
-		std::cout<<"/qjs/<path>:"<<pPath<<std::endl;
 		app::qjs::Engine e;
 		//e.getRuntime();
 		//e.getContext();
@@ -56,12 +62,14 @@ app::http::Server::Server(){
 		//e.getJSContext();
 		app::qjs::mod::crow::reg(e.getContext(),req,res);
 		e.evalFile(std::string("./js/")+pPath);
-		crow::json::wvalue j;
-		j["msg"]="ok";
-		//res.add_header("Content-Type","application/json");
-		res.add_header("Content-Type","text/plain");
-		res.write(j.dump());
-		res.end();
+		if(!res.is_completed()){
+			crow::json::wvalue j;
+			j["status"]="complete";
+			//res.add_header("Content-Type","application/json");
+			res.add_header("Content-Type","text/plain");
+			res.write(j.dump());
+			res.end();
+		}
 	});
 	if(app::config::config.get_httpLogLevel()=="info"){
 		mApp.loglevel(::crow::LogLevel::Info);

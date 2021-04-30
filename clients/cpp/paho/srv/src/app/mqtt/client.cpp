@@ -59,7 +59,7 @@ class callback:public virtual mqtt::callback,public virtual mqtt::iaction_listen
 		}
 		void on_failure(const mqtt::token&tok)override{
 			PLOG_ERROR<<"Connection attempt failed";
-			if(++nretry_>N_RETRY_ATTEMPTS)exit(1);
+			//if(++nretry_>N_RETRY_ATTEMPTS)exit(1);
 			reconnect();
 		}
 		void on_success(const mqtt::token&tok)override{}
