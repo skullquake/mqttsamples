@@ -156,8 +156,8 @@ LIBFLAGS=$(addprefix -l,$(LIBNAMS))
 ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 else ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 else
-	LDFLAGS+=-Wl,-rpath=./lib
-	LDFLAGS+=-Wl,-rpath=$(LIBDIR)
+#	LDFLAGS+=-Wl,-rpath=./lib
+#	LDFLAGS+=-Wl,-rpath=$(LIBDIR)
 endif
 # --------------------------------------------------------------------------------
 ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
