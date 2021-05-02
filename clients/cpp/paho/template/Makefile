@@ -1,28 +1,28 @@
 ifndef TOOLCHAINDIR
 	TOOLCHAINDIR=
 endif
-ifndef PREFIX
-	PREFIX=
+ifndef COMPILERPREFIX
+	COMPILERPREFIX=
 endif
-ifndef POSTFIX
-	POSTFIX=
+ifndef COMPILERPOSTFIX
+	COMPILERPOSTFIX=
 endif
-ifdef $(word 1, PREFIX)
+ifdef $(word 1, COMPILERPREFIX)
 	SEP0=-
 else
 	SEP0=
 endif
-ifdef $(word 1, POSTFIX)
+ifdef $(word 1, COMPILERPOSTFIX)
 	SEP1=-
 else
 	SEP1=
 endif
 #removed os arch detection as it fails in msys2
-CXX=$(TOOLCHAINDIR)$(PREFIX)$(SEP0)g++$(SEP1)$(POSTFIX)
-CC=$(TOOLCHAINDIR)$(PREFIX)$(SEP0)gcc$(SEP1)$(POSTFIX)
-AR=$(TOOLCHAINDIR)$(PREFIX)$(SEP0)ar$(SEP1)$(POSTFIX)
-LD=$(TOOLCHAINDIR)$(PREFIX)$(SEP0)ld$(SEP1)$(POSTFIX)
-STRIP=$(TOOLCHAINDIR)$(PREFIX)$(SEP0)strip
+CXX=$(TOOLCHAINDIR)$(COMPILERPREFIX)$(SEP0)g++$(SEP1)$(COMPILERPOSTFIX)
+CC=$(TOOLCHAINDIR)$(COMPILERPREFIX)$(SEP0)gcc$(SEP1)$(COMPILERPOSTFIX)
+AR=$(TOOLCHAINDIR)$(COMPILERPREFIX)$(SEP0)ar$(SEP1)$(COMPILERPOSTFIX)
+LD=$(TOOLCHAINDIR)$(COMPILERPREFIX)$(SEP0)ld$(SEP1)$(COMPILERPOSTFIX)
+STRIP=$(TOOLCHAINDIR)$(COMPILERPREFIX)$(SEP0)strip
 MKDIR=/bin/mkdir
 RM=/bin/rmdir
 ECHO=/bin/echo
@@ -41,50 +41,50 @@ endif
 SRCDIR=src
 SRC:=$(shell find $(SRCDIR) -name '*.c' -o -name '*.cpp')
 OBJROOT=./obj
-OBJDIR=$(OBJROOT)/$(PREFIX)$(SEP1)$(POSTFIX)/
+OBJDIR=$(OBJROOT)/$(COMPILERPREFIX)$(SEP1)$(COMPILERPOSTFIX)/
 OBJS=$(addprefix $(OBJDIR),$(patsubst %.c,%.o ,$(patsubst %.cpp,%.o,$(SRC))))
 MAKEFILEPATH:=$(abspath $(lastword $(MAKEFILE_LIST)))
 CURRENTDIRNAM:=$(notdir $(patsubst %/,%,$(dir $(MAKEFILEPATH))))
-ifneq (,$(findstring djgpp,$(PREFIX)))
+ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 	BINNAM=a
 else
 	BINNAM=$(CURRENTDIRNAM)
 endif
 RUNSCRIPT=$(BINDIR)run$(SCREXT)
 BUILDROOT=build
-BINDIR=$(BUILDROOT)/$(PREFIX)$(SEP1)$(POSTFIX)/
+BINDIR=$(BUILDROOT)/$(COMPILERPREFIX)$(SEP1)$(COMPILERPOSTFIX)/
 BIN=$(BINDIR)$(BINNAM)$(BINEXT)
-#$(BINDIR)/$(BINNAM)$(SEP0)$(BINPREFIX)$(SEP1)$(BINPOSTFIX)$(SEP2)$(GCCVERSION)$(BINEXT)
-ifneq (,$(findstring mingw,$(PREFIX)))
+#$(BINDIR)/$(BINNAM)$(SEP0)$(BINCOMPILERPREFIX)$(SEP1)$(BINCOMPILERPOSTFIX)$(SEP2)$(GCCVERSION)$(BINEXT)
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 	BINEXT=.exe
 	SCREXT=.bat
-else ifneq (,$(findstring djgpp,$(PREFIX)))
+else ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 	BINEXT=.exe
 	SCREXT=.bat
-else ifneq (,$(findstring linux,$(PREFIX)))
+else ifneq (,$(findstring linux,$(COMPILERPREFIX)))
 	BINEXT=.out
 	SCREXT=.sh
 else
 	BINEXT=.out
 	SCREXT=.sh
 endif
-ifneq (,$(findstring mingw,$(PREFIX)))
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 	DSOEXT=.dll
-else ifneq (,$(findstring djgpp,$(PREFIX)))
+else ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 	DSOEXT=.dxe
-else ifneq (,$(findstring linux,$(PREFIX)))
+else ifneq (,$(findstring linux,$(COMPILERPREFIX)))
 	DSOEXT=.so
 else
 	DSOEXT=.so
 endif
-LIBDIR=./build/$(PREFIX)$(SEP1)$(POSTFIX)/
-LIBPREFIX=lib
-LIBDIR=./build/$(PREFIX)$(SEP1)$(POSTFIX)/lib
-ifneq (,$(findstring mingw,$(PREFIX)))
+LIBDIR=./build/$(COMPILERPREFIX)$(SEP1)$(COMPILERPOSTFIX)/
+LIBCOMPILERPREFIX=lib
+LIBDIR=./build/$(COMPILERPREFIX)$(SEP1)$(COMPILERPOSTFIX)/lib
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 	UPX=upx
-else ifneq (,$(findstring djgpp,$(PREFIX)))
+else ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 	UPX=upx
-else ifneq (,$(findstring linux,$(PREFIX)))
+else ifneq (,$(findstring linux,$(COMPILERPREFIX)))
 	UPX=echo skipping upx
 else
 	UPX=echo skipping upx
@@ -96,17 +96,17 @@ CXXFLAGS+=-Wall
 CXXFLAGS+=-O2
 CXXFLAGS+=-I./src
 CXXFLAGS+=-DBINNAM=\"$(BINNAM)\"
-CXXFLAGS+=-DPREFIX=\"$(PREFIX)\"
-CXXFLAGS+=-DPOSTFIX=\"$(POSTFIX)\"
+CXXFLAGS+=-DCOMPILERPREFIX=\"$(COMPILERPREFIX)\"
+CXXFLAGS+=-DCOMPILERPOSTFIX=\"$(COMPILERPOSTFIX)\"
 CXXFLAGS+=-DLIBDIR=\"$(LIBDIR)\"
-CXXFLAGS+=-DLIBPREFIX=\"$(LIBPREFIX)\"
-ifneq (,$(findstring djgpp,$(PREFIX)))
+CXXFLAGS+=-DLIBCOMPILERPREFIX=\"$(LIBCOMPILERPREFIX)\"
+ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 	#8.3 workarounds
-	CXXFLAGS+=-DLIBPOSTFIX=\"\"
+	CXXFLAGS+=-DLIBCOMPILERPOSTFIX=\"\"
 	#note _ prefix
 	CXXFLAGS+=-DENTRYPOINT=\"_appmain\"
 else
-	CXXFLAGS+=-DLIBPOSTFIX=\"$(SEP0)$(BINPREFIX)$(SEP1)$(BINPOSTFIX)$(SEP2)$(GCCVERSION)\"
+	CXXFLAGS+=-DLIBCOMPILERPOSTFIX=\"$(SEP0)$(BINCOMPILERPREFIX)$(SEP1)$(BINCOMPILERPOSTFIX)$(SEP2)$(GCCVERSION)\"
 	CXXFLAGS+=-DENTRYPOINT=\"appmain\"
 endif
 CXXFLAGS+=-DDSOEXT=\"$(DSOEXT)\"
@@ -116,7 +116,7 @@ LDFLAGS+=-lpaho-mqtt3a
 #LDFLAGS+=-lpaho-mqtt3c
 LDFLAGS+=-lpaho-mqttpp3
 # --------------------------------------------------------------------------------
-ifneq (,$(findstring djgpp,$(PREFIX)))
+ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 	#import libs
 	LIBNAMS=$(shell (ls $(LIBDIR)|grep libi|cut -f1 -d".")|cut -c4-)
 else
@@ -125,28 +125,28 @@ else
 endif
 LIBFLAGS=$(addprefix -l,$(LIBNAMS))
 # --------------------------------------------------------------------------------
-ifneq (,$(findstring djgpp,$(PREFIX)))
-else ifneq (,$(findstring mingw,$(PREFIX)))
+ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
+else ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 else
 	LDFLAGS+=-Wl,-rpath=./lib
 	LDFLAGS+=-Wl,-rpath=$(LIBDIR)
 endif
 # --------------------------------------------------------------------------------
-ifneq (,$(findstring mingw,$(PREFIX)))
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 	LDFLAGS+=-static
 endif
-ifneq (,$(findstring mingw,$(PREFIX)))
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 	# wrap dso dynspec: start
-	ifneq (,$(findstring win32,$(POSTFIX)))
+	ifneq (,$(findstring win32,$(COMPILERPOSTFIX)))
 		LDFLAGS+=-Wl,-Bdynamic
 	else
 		LDFLAGS+=-Wl,-Bdynamic
 	endif
 endif
 LDFLAGS+=$(LIBFLAGS)
-ifneq (,$(findstring mingw,$(PREFIX)))
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 	# wrap dso dynspec: end
-	ifneq (,$(findstring win32,$(POSTFIX)))
+	ifneq (,$(findstring win32,$(COMPILERPOSTFIX)))
 		LDFLAGS+=-Wl,-Bstatic
 	else
 		LDFLAGS+=-Wl,-Bstatic
@@ -185,21 +185,21 @@ strip:$(BIN)
 compress:strip
 	@echo "compressing $(BIN)..."
 	@-$(UPX) $(BIN)
-ifneq (,$(findstring mingw,$(PREFIX)))
+ifneq (,$(findstring mingw,$(COMPILERPREFIX)))
 $(RUNSCRIPT):compress
 	@echo "creating runscript for $(BIN)..."
 	@echo "@echo off" > $(RUNSCRIPT)
 	@echo "setlocal" >> $(RUNSCRIPT)
 	@echo "set PATH=.\lib;%PATH%" >> $(RUNSCRIPT)
 	@echo ".\\\$(BINNAM)$(BINEXT)" >> $(RUNSCRIPT)
-else ifneq (,$(findstring djgpp,$(PREFIX)))
+else ifneq (,$(findstring djgpp,$(COMPILERPREFIX)))
 $(RUNSCRIPT):compress
 	@echo "creating runscript for $(BIN)..."
 	@echo "@echo off" > $(RUNSCRIPT)
 	@echo "set PATH=.\lib;%PATH%" >> $(RUNSCRIPT)
 	@echo "set LD_LIBRARY_PATH=.\lib" >> $(RUNSCRIPT)
 	@echo ".\\\$(BINNAM)$(BINEXT)" >> $(RUNSCRIPT)
-else ifneq (,$(findstring linux,$(PREFIX)))
+else ifneq (,$(findstring linux,$(COMPILERPREFIX)))
 $(RUNSCRIPT):compress
 	@echo "creating runscript for $(BIN)..."
 	@echo "#!/bin/bash" > $(RUNSCRIPT)

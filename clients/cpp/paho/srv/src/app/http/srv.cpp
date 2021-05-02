@@ -2,6 +2,7 @@
 #include"app/config/config.hpp"
 #include"app/qjs/global.hpp"
 #include"app/qjs/mod/crow/mod.hpp"
+#include"app/qjs/mod/crowpp/mod.hpp"
 #include"version/version.hpp"
 app::http::Server::Server(){
 	//crow::App</*MW*/>app;
@@ -55,12 +56,9 @@ app::http::Server::Server(){
 		return j;
 	});
 	CROW_ROUTE(mApp,"/qjs/<path>")([this](const crow::request&req,crow::response&res,std::string pPath){
-		app::qjs::Engine e;
-		//e.getRuntime();
-		//e.getContext();
-		//e.getJSRuntime();
-		//e.getJSContext();
-		app::qjs::mod::crow::reg(e.getContext(),req,res);
+		::app::qjs::Engine e;
+		::app::qjs::mod::crow::reg(e.getContext(),req,res);
+		::app::qjs::mod::crowpp::init(e.getContext(),"Crowpp",mApp,req,res);
 		e.evalFile(std::string("./js/")+pPath);
 		if(!res.is_completed()){
 			crow::json::wvalue j;

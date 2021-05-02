@@ -1,5 +1,5 @@
 {
 	"name":"SqSrv",
 	"description":"Mqtt/Http Test Client",
-	"notes":"added crow add_headers, write, and end to qjs"
+	"notes":"crowpp functionality added"
 }

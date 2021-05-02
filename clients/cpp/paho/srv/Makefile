@@ -275,42 +275,42 @@ $(VERFILE):
 statver:$(VERFILE)
 	(cat ./src/res/version.json |jq '.')
 incmajor:$(VERFILE)
-	(cat ./src/res/version.json |jq '.major|=.+1'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.major|=.+1'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 incminor:$(VERFILE)
-	(cat ./src/res/version.json |jq '.minor|=.+1'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.minor|=.+1'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 incpatch:$(VERFILE)
-	(cat ./src/res/version.json |jq '.patch|=.+1'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.patch|=.+1'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 decmajor:$(VERFILE)
-	(cat ./src/res/version.json |jq '.major|=.-1'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.major|=.-1'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 decminor:$(VERFILE)
-	(cat ./src/res/version.json |jq '.minor|=.-1'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.minor|=.-1'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 decpatch:$(VERFILE)
-	(cat ./src/res/version.json |jq '.patch|=.-1'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.patch|=.-1'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 ifeq (setmajor,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(RUN_ARGS):;@:)
 endif
 setmajor:$(VERFILE)
-	(cat ./src/res/version.json |jq '.major|=$(RUN_ARGS)')&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.major|=$(RUN_ARGS)')&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 ifeq (setminor,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(RUN_ARGS):;@:)
 endif
 setminor:$(VERFILE)
-	(cat ./src/res/version.json |jq '.minor|=$(RUN_ARGS)'>/tmp/a.json)&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.minor|=$(RUN_ARGS)'>$(TMPDIR)/a.json)&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 ifeq (setpatch,$(firstword $(MAKECMDGOALS)))
   RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
   $(eval $(RUN_ARGS):;@:)
 endif
 setpatch:$(VERFILE)
-	(cat ./src/res/version.json |jq '.patch|=$(RUN_ARGS)')&&mv /tmp/a.json ./src/res/version.json
+	(cat ./src/res/version.json |jq '.patch|=$(RUN_ARGS)')&&mv $(TMPDIR)/a.json ./src/res/version.json
 	(cat ./src/res/version.json |jq '.')
 
