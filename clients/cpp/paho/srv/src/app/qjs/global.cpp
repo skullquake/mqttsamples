@@ -1,6 +1,7 @@
 #include"./global.hpp"
 #include"app/config/config.hpp"
-#include"./mod/test/mod.hpp"
+#include"./mod/sample/mod.hpp"
+#include"./mod/samplepp/mod.hpp"
 //#include"./mod/crow/mod.hpp"
 app::qjs::Engine::Engine():context(runtime),cli(nullptr){
 	rt=runtime.rt;
@@ -16,7 +17,29 @@ app::qjs::Engine::Engine():context(runtime),cli(nullptr){
 		globalThis.std = std;
 		globalThis.os = os;
 	)","<input>",JS_EVAL_TYPE_MODULE);
-	app::qjs::mod::test::js_init_module_my_module(ctx,"test");
+	//app::qjs::mod::sample::js_init_module_my_module(ctx,"test");
+	{
+		auto&module=context.addModule("Test2");
+		module.function("vv",[](){
+		});
+		module.function("vs",[](){
+				return"foo";
+		});
+		module.function("ss",[](std::string val){
+				return val;
+		});
+		std::string s="lorem";
+		module.function("css",[&s](){
+				return s;
+		});
+		context.eval(R"(
+			import * as test2 from 'Test2';
+			globalThis.test2=test2;
+		)","<input>",JS_EVAL_TYPE_MODULE);
+
+
+	}
+	app::qjs::mod::samplepp::init(context,"Test3");
 	//app::qjs::mod::crow::reg(context);
 	/*
 	{

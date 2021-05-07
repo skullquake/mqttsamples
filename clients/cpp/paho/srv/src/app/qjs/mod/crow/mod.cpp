@@ -1,37 +1,57 @@
 #include"./mod.hpp"
 #include<iostream>
 #include<sstream>
+#include<iomanip>
+#include"crow/crow.h"
 namespace app::qjs::mod::crow{
 	static void write(std::string pSaddr,std::string pVal){
-		std::cout<<pSaddr<<std::endl;
-		std::cout<<pVal<<std::endl;
+		::crow::response*res=nullptr;{
+			unsigned long ul;
+			std::istringstream iss(pSaddr);
+			iss>>std::hex>>ul;
+			res=(::crow::response*)((void*)ul);
+		}if(res==nullptr)return;
+		res->write(pVal);
+	}
+	static void end(std::string pSaddr){
+		::crow::response*res=nullptr;{
+			unsigned long ul;
+			std::istringstream iss(pSaddr);
+			iss>>std::hex>>ul;
+			res=(::crow::response*)((void*)ul);
+		}if(res==nullptr)return;
+		res->end();
 	}
 	static void add_header(std::string pSaddr,std::string pHdrK,std::string pHdrV){
-		std::cout<<pSaddr<<std::endl;
-		std::cout<<pHdrK<<std::endl;
-		std::cout<<pHdrV<<std::endl;
+		::crow::response*res=nullptr;{
+			unsigned long ul;
+			std::istringstream iss(pSaddr);
+			iss>>std::hex>>ul;
+			res=(::crow::response*)((void*)ul);
+		}if(res==nullptr)return;
+		res->add_header(pHdrK,pHdrV);
 	}
 	void reg(::qjs::Context&context,const ::crow::request&req,::crow::response&res){
-		std::cout<<"app::qjs::mod::crow::reg:start"<<std::endl;
 		auto&module=context.addModule("Crow");
 		module.function<&write>("write");
+		module.function<&end>("end");
 		module.function<&add_header>("add_header");
+
 		//module.function("test",[](){});
 		//auto cb=[](){};
 		//module.function<static_cast<void(*)(void)>(&cb)>("test");
 
 		{//module.add("res",&res);
 			std::ostringstream oss;
-			oss<<((void*)&res);
+			oss<<std::hex<<((void*)&res);
 			module.add("res",oss.str());
 		}
 
 		{//module.add("req",&req);
 			std::ostringstream oss;
-			oss<<((void*)&req);
+			oss<<std::hex<<((void*)&res);
 			module.add("req",oss.str());
 		}
-
 		context.eval(
 			R"(
 				import*as crow from'Crow';
