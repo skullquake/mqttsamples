@@ -28,7 +28,7 @@ func main(){
 	mqtt.CRITICAL=log.New(os.Stdout,"[CRIT] ",0)
 	mqtt.WARN=log.New(os.Stdout,"[WARN]  ",0)
 	mqtt.DEBUG=log.New(os.Stdout,"[DEBUG] ",0)
-	opts:=mqtt.NewClientOptions().AddBroker("tcp://localhost:1883").SetClientID("go_paho")
+	opts:=mqtt.NewClientOptions().AddBroker("tcp://skullquake.dedicated.co.za:1883").SetClientID("go_paho")
 	opts.SetKeepAlive(2*time.Second)
 	opts.SetDefaultPublishHandler(f)
 	opts.SetPingTimeout(1*time.Second)
